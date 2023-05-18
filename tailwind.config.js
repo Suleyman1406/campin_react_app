@@ -4,6 +4,9 @@ module.exports = {
     },
     theme: {
         extend: {
+            boxShadow: {
+                input: '0px 0px 0px 4px rgba(255, 119, 87, 0.54)',
+            },
             colors: {
                 'primary-1': '#FF7757',
                 'primary-2': '#FFD2C7',

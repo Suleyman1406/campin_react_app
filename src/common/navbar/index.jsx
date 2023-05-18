@@ -36,11 +36,15 @@ const Navbar = () => {
                     Pricing
                 </a>
             </div>
-            <div className="flex gap-x-9">
-                <button className="hover:scale-105 duration-100">Login</button>
-                <button className="px-8 py-5 bg-primary-1 rounded-xl border-2 border-transparent duration-150 hover:scale-105">
-                    Sign up
-                </button>
+            <div className="flex gap-x-9 items-center">
+                <Link to="/login">
+                    <button className="hover:scale-105 duration-100">Login</button>
+                </Link>
+                <Link to="/register">
+                    <button className="px-8 py-5 bg-primary-1 rounded-xl border-2 border-transparent duration-150 hover:scale-105">
+                        Sign up
+                    </button>
+                </Link>
             </div>
         </div>
     );
