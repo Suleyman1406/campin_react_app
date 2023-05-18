@@ -27,7 +27,7 @@ const Login = () => {
                     <form>
                         <div className="relative">
                             <input
-                                type="Email"
+                                type="email"
                                 placeholder="Email"
                                 className="border border-[#1A1D21] outline-none w-full py-3 pl-[52px] rounded-[8px] focus:shadow-input hover:border-[#858585] duration-100"
                             />
@@ -74,7 +74,7 @@ const Login = () => {
                                 Forgot password?
                             </a>
                         </div>
-                        <button className="w-full rounded-xl bg-primary-1 py-3 text-white font-bold leading-6">
+                        <button className="w-full rounded-xl bg-primary-1 py-3 text-white font-bold leading-6  hover:scale-105 duration-200">
                             Log in
                         </button>
                     </form>
