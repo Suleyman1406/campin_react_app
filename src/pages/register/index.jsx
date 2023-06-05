@@ -13,7 +13,7 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     return (
         <div className="flex min-h-screen">
-            <div className="w-[50%] p-4 relative flex justify-center items-center">
+            <div className="w-full lg:w-[50%] p-4 relative flex justify-center items-center">
                 <div className="w-[calc(100%-40px)] pr-10 absolute top-10 left-10 flex justify-between items-center">
                     <Link to="/" className="font-play-fair text-4xl">
                         Campin
@@ -25,11 +25,11 @@ const Register = () => {
                         Login
                     </Link>
                 </div>
-                <div className="w-[676px] mx-auto">
-                    <h2 className="text-[36px] leading-[44px] font-bold mb-16">
+                <div className="w-full md:w-[676px] mx-auto">
+                    <h2 className="text-[24px] leading-[32px] md:text-[36px] md:leading-[44px] font-bold mb-2 md:mb-16">
                         Register and get ready for your trip.
                     </h2>
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
                         <div>
                             <label
                                 htmlFor="registerFullName"
@@ -63,7 +63,12 @@ const Register = () => {
                             </div>
                         </div>
                         <div>
-                            <label htmlFor="registerPassword">Password</label>
+                            <label
+                                htmlFor="registerPassword"
+                                className="text-sm text-[#9B9C9E] mb-4"
+                            >
+                                Password
+                            </label>
                             <div className="relative ">
                                 <input
                                     id="registerPassword"
@@ -89,7 +94,12 @@ const Register = () => {
                             </div>
                         </div>
                         <div>
-                            <label htmlFor="registerConfirmPassword">Confirm Password</label>
+                            <label
+                                htmlFor="registerConfirmPassword"
+                                className="text-sm text-[#9B9C9E] mb-4"
+                            >
+                                Confirm Password
+                            </label>
                             <div className="relative ">
                                 <input
                                     id="registerConfirmPassword"
@@ -115,7 +125,7 @@ const Register = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex items-center my-12">
+                    <div className="flex items-center my-3 md:my-12">
                         <input
                             type="checkbox"
                             name="rememberMe"
@@ -142,7 +152,7 @@ const Register = () => {
                 </div>
             </div>
             <img
-                className="w-[50%] min-h-screen max-h-screen h-full object-cover object-center"
+                className="hidden lg:block w-[50%] min-h-screen max-h-screen h-full object-cover object-center"
                 src={RegisterBg}
                 alt="camping"
             />
