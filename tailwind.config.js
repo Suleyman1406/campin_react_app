@@ -8,8 +8,8 @@ module.exports = {
                 input: '0px 0px 0px 4px rgba(255, 119, 87, 0.54)',
             },
             colors: {
-                'primary-1': '#FF7757',
-                'primary-2': '#FFD2C7',
+                'primary-1': '#617143',
+                'primary-2': '#7AA874',
                 'secondary-1': '#331811',
                 'secondary-2': '#61291C',
             },
@@ -23,6 +23,12 @@ module.exports = {
             },
             fontFamily: {
                 'play-fair': ['Playfair Display', 'serif'],
+            },
+            screens: {
+                sm: '320px',
+                md: '768px',
+                lg: '1152px',
+                xl: '1440px',
             },
         },
     },
