@@ -6,11 +6,11 @@ import { DESTINATIONS } from './destinations';
 
 const PopularDestinations = () => {
     return (
-        <div className="my-[60px] md:my-[140px] w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto ">
+        <div className="my-[60px] md:my-[140px] w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto duration-75">
             <h2 className="font-play-fair text-secondary-1 text-[54px] leading-[71px] md:text-[64px] md:leading-[85px]">
                 Popular Destinations
             </h2>
-            <div className="w-[365px] h-1 border-b-[3px] border-primary-1 mt-5 mb-8"></div>
+            <div className="w-[220px] md:w-[365px] h-1 border-b-[3px] border-primary-1 mt-5 mb-8"></div>
             <div className="flex justify-between items-center">
                 <p className="text-[#767E86] text-[20px] leading-[23px] md:text-[24px] md:leading-[28px]">
                     Most popular destinations around the world, from historical places to natural

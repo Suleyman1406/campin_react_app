@@ -32,7 +32,7 @@ const LandingSection = () => {
                     </h3>
                     <ArrowRightIcon className="group-hover:scale-110 duration-150" />
                 </div>
-                <div className=" rounded-t-2xl lg:rounded-none order-1 bg-white lg:bg-transparent duration-75 w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 xl:flex gap-5 gap-x-1 lg:gap-x-5 py-10 xl:py-[74px]">
+                <div className="rounded-t-2xl lg:rounded-none order-1 bg-white lg:bg-transparent duration-75 w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 xl:flex gap-5 gap-x-1 lg:gap-x-5 py-10 xl:py-[74px]">
                     <Autocomplete
                         disablePortal
                         id="combo-box-demo"
