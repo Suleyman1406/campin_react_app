@@ -46,7 +46,7 @@ const SpecialOffers = () => {
                                             €{offer.price}
                                         </span>
                                     </div>
-                                    <button className="py-5 px-10 uppercase text-white bg-primary-1 rounded-xl">
+                                    <button className="py-5 px-10 uppercase text-white bg-primary-1 rounded-xl hover:opacity-80 duration-75">
                                         Details
                                     </button>
                                 </div>

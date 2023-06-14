@@ -11,7 +11,7 @@ module.exports = {
                 'primary-1': '#617143',
                 'primary-2': '#FFF8DE',
                 'secondary-1': '#331811',
-                'secondary-2': '#61291C',
+                'secondary-2': '#884A39',
             },
             screens: {
                 '3xl': '1792px',
