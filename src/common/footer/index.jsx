@@ -12,18 +12,18 @@ const Footer = () => {
                 style={{
                     boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.3)',
                 }}
-                className="absolute -top-[100px] left-[50%] -translate-x-[50%] w-fit py-[60px] px-[80px] bg-white flex items-center gap-x-[100px] justify-center rounded-[26px]"
+                className="min-w-[60%] xl:min-w-fit absolute -top-[180px] md:-top-[120px] left-[50%] -translate-x-[50%] lg:w-fit py-[60px] w-[calc(100%-36px)] px-[40px] xl:px-[80px] bg-white flex flex-col xl:flex-row items-start gap-y-4 lg:items-center gap-x-[40px] justify-center rounded-[26px]"
             >
-                <h1 className="w-[450px] font-play-fair text-[#767E86] text-[64px] leading-[86px] font-normal">
+                <h1 className="font-play-fair text-[#767E86] text-[40px] leading-[54px] lg:text-[64px] lg:leading-[86px] font-normal">
                     Our Newsletter
                 </h1>
-                <div className="flex gap-x-8">
-                    <div className="text-[20px]">
+                <div className="flex gap-x-8 w-full lg:w-fit flex-col sm:flex-row gap-y-3 md:min-w-[400px]">
+                    <div className="text-[20px] w-full lg:w-fit">
                         <p className="mb-4 text-[#767E86]">Email</p>
                         <input
                             type="text"
                             placeholder="Enter your email"
-                            className="bg-primary-1/40 text-primary-1/90 outline-none border border-transparent hover:border-primary-1/50 focus:border-primary-1 rounded-xl py-6 px-10"
+                            className="bg-primary-1/40 text-primary-1/90 outline-none border border-transparent hover:border-primary-1/50 focus:border-primary-1 rounded-xl py-6 px-10 w-full"
                         />
                     </div>
                     <button className="bg-primary-1 h-fit mt-auto text-white py-[24.5px] px-8 text-[20px] rounded-xl hover:scale-105 duration-100">
@@ -31,7 +31,7 @@ const Footer = () => {
                     </button>
                 </div>
             </div>
-            <div className="pt-[200px] pb-[100px] w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto duration-75 flex justify-between">
+            <div className="pt-[280px] lg:pt-[200px] pb-[100px] w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto duration-75 flex justify-between flex-wrap gap-y-6">
                 <div>
                     <Link to="/" className="font-play-fair text-4xl">
                         Campin
