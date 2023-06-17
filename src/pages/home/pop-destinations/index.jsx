@@ -6,7 +6,10 @@ import { DESTINATIONS } from './destinations';
 
 const PopularDestinations = () => {
     return (
-        <div className="my-[60px] md:my-[140px] w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto duration-75">
+        <div
+            id="home_popular_destinations_section"
+            className="my-[60px] md:my-[140px] w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto duration-75"
+        >
             <h2 className="font-play-fair text-secondary-1 text-[54px] leading-[71px] md:text-[64px] md:leading-[85px]">
                 Popular Destinations
             </h2>

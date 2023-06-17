@@ -5,13 +5,16 @@ import { EXPERIENCES } from './experiences';
 
 const Experiences = () => {
     return (
-        <div className="my-[60px] md:my-[140px] w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto duration-75">
+        <div
+            id="home_experiences_section"
+            className="my-[60px] md:my-[140px] w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto duration-75"
+        >
             <h2 className="font-play-fair text-secondary-1 text-[54px] leading-[71px] md:text-[64px] md:leading-[85px]">
-                Destination Gallery
+                Traveler’s Experiences
             </h2>
             <div className="w-[283px] h-1 border-b-[3px] border-primary-1 mt-5 mb-8"></div>
             <p className="text-[#767E86] text-[20px] leading-[23px] md:text-[24px] md:leading-[28px]">
-                Our photo gallery on trip
+                Here some awesome feedback from our travelers
             </p>
             <div className="relative w-full h-[530px] md:h-[420px] mt-8 overflow-x-auto pt-16 md:pt-20 customscrollbar duration-100">
                 <div className={`absolute left-0 flex w-fit duration-100`}>
