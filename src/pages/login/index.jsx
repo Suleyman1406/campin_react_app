@@ -47,7 +47,6 @@ const Login = () => {
                     <h4 className="text-sm mt-3 md:mt-6 mb-5 md:mb-16 font-medium text-[#9B9C9E] tracking-[0.15px]">
                         Log in to Campin to start your holiday.
                     </h4>
-
                     <Formik
                         initialValues={{
                             email: '',

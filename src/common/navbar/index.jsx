@@ -75,7 +75,7 @@ const Navbar = () => {
                     >
                         <Menu.Items className="absolute text-center right-0 mt-2 w-[280px] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <Link
-                                to="/"
+                                to="/account"
                                 className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
                             >
                                 Account
@@ -109,7 +109,7 @@ const Navbar = () => {
                     <Menu.Items className="absolute text-center right-0 mt-2 w-[280px] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         {user && (
                             <Link
-                                to="/"
+                                to="/account"
                                 className="p-3 flex justify-center items-center gap-x-3 hover:scale-105 duration-100"
                             >
                                 <img

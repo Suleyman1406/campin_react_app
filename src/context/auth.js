@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
-import { getCurrentUser } from 'services/auth/getUserInfo';
+import { toast } from 'react-toastify';
 import { login } from 'services/auth/login';
 import { register } from 'services/auth/register';
+import { getCurrentUser } from 'services/user/getUserInfo';
 import { notifyAxiosError } from 'utils';
 
 const AuthContext = createContext({});
@@ -16,13 +17,6 @@ export function AuthProvider({ children }) {
     // We are using `react-router` for this example,
     // but feel free to omit this or use the
     // router of your choice.
-    // const history = useHistory();
-    // const location = useLocation();
-
-    // Reset the error state if we change page
-    // useEffect(() => {
-    //     if (error) setError(undefined);
-    // }, [location.pathname]);
 
     // Check if there is a currently active session
     // when the provider is mounted for the first time.
@@ -37,6 +31,11 @@ export function AuthProvider({ children }) {
             getCurrentUser(jwt)
                 .then((res) => {
                     setUser(res.data);
+                })
+                .catch((err) => {
+                    toast.error('Session expired, please login again.');
+                    localStorage.removeItem('jwt');
+                    console.error(err);
                 })
                 .finally(() => setLoadingInitial(false));
         } else {

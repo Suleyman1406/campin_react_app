@@ -12,10 +12,10 @@ import { router } from './router';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-        <AuthProvider>
-            <RouterProvider router={router} />
-            <ToastContainer autoClose={2500} pauseOnHover theme="dark" />
-        </AuthProvider>
-    </React.StrictMode>,
+    // <React.StrictMode>
+    <AuthProvider>
+        <RouterProvider router={router} />
+        <ToastContainer autoClose={2500} pauseOnHover theme="dark" />
+    </AuthProvider>,
+    // </React.StrictMode>,
 );

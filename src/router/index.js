@@ -1,3 +1,6 @@
+import { ProtectedRoute } from 'common/auth-guard/protected';
+import Account from 'pages/account';
+import Campsites from 'pages/campsite';
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -17,5 +20,17 @@ export const router = createBrowserRouter([
     {
         path: '/register',
         element: <Register />,
+    },
+    {
+        path: '/campsites',
+        element: <Campsites />,
+    },
+    {
+        path: '/account',
+        element: (
+            <ProtectedRoute>
+                <Account />
+            </ProtectedRoute>
+        ),
     },
 ]);
