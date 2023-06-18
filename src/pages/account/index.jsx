@@ -2,6 +2,7 @@ import useAuth from 'context/auth';
 import { Form, Formik } from 'formik';
 import { ReactComponent as EditIcon } from 'images/icons/edit.svg';
 import { ReactComponent as PenIcon } from 'images/icons/pen.svg';
+import LandingBg from 'images/landing_bg.jpeg';
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
@@ -14,7 +15,7 @@ const Account = () => {
     const [isLoading, setLoading] = useState(false);
     const onSubmit = useCallback((values) => {
         setLoading(true);
-        editUserInfo({ ...values, userID: user.userID })
+        editUserInfo({ ...values, userID: user.userID ?? user.id })
             .then(() => {
                 toast.success('User info successfully edited.');
             })
@@ -23,12 +24,15 @@ const Account = () => {
     }, []);
 
     return (
-        <div className="bg-primary-1 min-h-screen">
+        <div
+            className="bg-primary-1 min-h-screen bg-bottom bg-no-repeat bg-cover"
+            style={{ backgroundImage: `url(${LandingBg})` }}
+        >
             <div
                 style={{
                     boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
                 }}
-                className="w-[320px] min-h-screen rounded-3xl bg-white md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto duration-75 py-2 lg:py-5"
+                className="w-[320px] min-h-screen rounded-3xl bg-white lg:w-[768px] xl:w-[1152px] mx-auto duration-75 py-2 lg:py-5"
             >
                 <Link to="/" className="font-play-fair text-4xl ml-8">
                     Campin
@@ -50,7 +54,7 @@ const Account = () => {
                         initialValues={{
                             name: user.name ?? '',
                             email: user.email ?? '',
-                            role: user.role ?? '',
+                            role: user.role ?? user.roles?.[0] ?? '',
                             surname: user.surname ?? '',
                             contry: user.contry ?? '',
                             address: user.address ?? '',
@@ -63,14 +67,14 @@ const Account = () => {
                         {({ values, setFieldValue, errors, touched, setFieldTouched }) => (
                             <Form className="flex flex-col gap-y-8">
                                 <div className="mt-8">
-                                    <div className="flex flex-col md:items-center gap-y-2 gap-x-4 md:flex-row">
+                                    <div className="flex flex-col lg:items-center gap-y-2 gap-x-4 lg:flex-row">
                                         <label
                                             htmlFor="account_name"
                                             className="text-xl font-bold text-primary-1 w-[120px]"
                                         >
                                             Name:
                                         </label>
-                                        <div className="relative md:w-[400px]">
+                                        <div className="relative lg:w-[400px]">
                                             <input
                                                 id="account_name"
                                                 type="text"
@@ -90,14 +94,14 @@ const Account = () => {
                                     </p>
                                 </div>
                                 <div>
-                                    <div className="flex flex-col md:items-center gap-y-2 gap-x-4 md:flex-row">
+                                    <div className="flex flex-col lg:items-center gap-y-2 gap-x-4 lg:flex-row">
                                         <label
                                             htmlFor="account_surname"
                                             className="text-xl font-bold text-primary-1 w-[120px]"
                                         >
                                             Surname:
                                         </label>
-                                        <div className="relative md:w-[400px]">
+                                        <div className="relative lg:w-[400px]">
                                             <input
                                                 id="account_surname"
                                                 type="text"
@@ -117,14 +121,14 @@ const Account = () => {
                                     </p>
                                 </div>
                                 <div>
-                                    <div className="flex flex-col md:items-center gap-y-2 gap-x-4 md:flex-row">
+                                    <div className="flex flex-col lg:items-center gap-y-2 gap-x-4 lg:flex-row">
                                         <label
                                             htmlFor="account_email"
                                             className="text-xl font-bold text-primary-1 w-[120px]"
                                         >
                                             Email:
                                         </label>
-                                        <div className="relative md:w-[400px]">
+                                        <div className="relative lg:w-[400px]">
                                             <input
                                                 disabled
                                                 id="account_email"
@@ -145,14 +149,14 @@ const Account = () => {
                                     </p>
                                 </div>
                                 <div>
-                                    <div className="flex flex-col md:items-center gap-y-2 gap-x-4 md:flex-row">
+                                    <div className="flex flex-col lg:items-center gap-y-2 gap-x-4 lg:flex-row">
                                         <label
                                             htmlFor="account_role"
                                             className="text-xl font-bold text-primary-1 w-[120px]"
                                         >
                                             Role:
                                         </label>
-                                        <div className="relative md:w-[400px]">
+                                        <div className="relative lg:w-[400px]">
                                             <input
                                                 disabled
                                                 id="account_role"
@@ -172,7 +176,7 @@ const Account = () => {
                                         {errors.role && touched.role ? errors.role : ''}
                                     </p>
                                 </div>
-                                <div className="flex text-xl  flex-col md:items-center gap-y-2 gap-x-4 md:flex-row mb-2">
+                                <div className="flex text-xl  flex-col lg:items-center gap-y-2 gap-x-4 lg:flex-row mb-2">
                                     <span className="text-xl font-bold text-primary-1 w-[120px]">
                                         Gender
                                     </span>
@@ -202,14 +206,14 @@ const Account = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="flex flex-col md:items-center gap-y-2 gap-x-4 md:flex-row">
+                                    <div className="flex flex-col lg:items-center gap-y-2 gap-x-4 lg:flex-row">
                                         <label
                                             htmlFor="account_surname"
                                             className="text-xl font-bold text-primary-1 w-[120px]"
                                         >
                                             Country:
                                         </label>
-                                        <div className="relative md:w-[400px]">
+                                        <div className="relative lg:w-[400px]">
                                             <input
                                                 id="account_country"
                                                 type="text"
@@ -229,14 +233,14 @@ const Account = () => {
                                     </p>
                                 </div>
                                 <div>
-                                    <div className="flex flex-col md:items-center gap-y-2 gap-x-4 md:flex-row">
+                                    <div className="flex flex-col lg:items-center gap-y-2 gap-x-4 lg:flex-row">
                                         <label
                                             htmlFor="account_address"
                                             className="text-xl font-bold text-primary-1 w-[120px]"
                                         >
                                             Address:
                                         </label>
-                                        <div className="relative md:w-[400px]">
+                                        <div className="relative lg:w-[400px]">
                                             <input
                                                 id="account_address"
                                                 type="text"
@@ -256,14 +260,14 @@ const Account = () => {
                                     </p>
                                 </div>
                                 <div>
-                                    <div className="flex flex-col md:items-center gap-y-2 gap-x-4 md:flex-row">
+                                    <div className="flex flex-col lg:items-center gap-y-2 gap-x-4 lg:flex-row">
                                         <label
                                             htmlFor="account_phoneNumber"
                                             className="text-xl font-bold text-primary-1 w-[120px]"
                                         >
                                             Phone Number:
                                         </label>
-                                        <div className="relative md:w-[400px]">
+                                        <div className="relative lg:w-[400px]">
                                             <input
                                                 id="account_phoneNumber"
                                                 type="text"
