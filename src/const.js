@@ -28,3 +28,9 @@ export const PERSON_COUNT = [
     { label: '6', value: 6 },
     { label: '7', value: 7 },
 ];
+
+export const ROLES = {
+    ADMIN: 'Admin',
+    CAMPSITE_OWNER: 'Owner',
+    USER: 'Basic',
+};

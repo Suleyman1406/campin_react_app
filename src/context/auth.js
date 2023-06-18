@@ -1,3 +1,4 @@
+import { ROLES } from 'const';
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
@@ -86,6 +87,15 @@ export function AuthProvider({ children }) {
         localStorage.removeItem('jwt');
     }
 
+    function isCampsiteOwner() {
+        if (
+            !user ||
+            (user.role !== ROLES.CAMPSITE_OWNER && user.roles?.[0] !== ROLES.CAMPSITE_OWNER)
+        )
+            return false;
+        return true;
+    }
+
     // Make the provider update only when it should.
     // We only want to force re-renders if the user,
     // loading or error states change.
@@ -103,6 +113,7 @@ export function AuthProvider({ children }) {
             loginFunc,
             logoutFunc,
             registerFunc,
+            isCampsiteOwner,
         }),
         [user, loading, error],
     );

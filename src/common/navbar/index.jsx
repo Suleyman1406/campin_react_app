@@ -5,7 +5,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-    const { user, logoutFunc } = useAuth();
+    const { user, logoutFunc, isCampsiteOwner } = useAuth();
 
     return (
         <div className="duration-75 w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] text-white mx-auto  py-10 flex justify-between items-center text-xl">
@@ -80,6 +80,14 @@ const Navbar = () => {
                             >
                                 Account
                             </Link>
+                            {isCampsiteOwner() && (
+                                <Link
+                                    to="/owner/campsite"
+                                    className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                                >
+                                    Campsites
+                                </Link>
+                            )}
                             <button
                                 onClick={() => logoutFunc()}
                                 className="w-full text-white rounded-b-md p-3 bg-primary-1 hover:opacity-70"
@@ -118,6 +126,14 @@ const Navbar = () => {
                                     className="w-[40px] h-[40px] object-cover rounded-full"
                                 />
                                 <p className="font-bold text-primary-1">Account</p>
+                            </Link>
+                        )}
+                        {isCampsiteOwner() && (
+                            <Link
+                                to="/owner/campsite"
+                                className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                            >
+                                Campsites
                             </Link>
                         )}
                         <a
@@ -166,6 +182,7 @@ const Navbar = () => {
                                 </Link>
                             </>
                         )}
+
                         {user && (
                             <button
                                 onClick={() => logoutFunc()}

@@ -21,6 +21,7 @@ const Account = () => {
             .catch((err) => notifyAxiosError(err))
             .finally(() => setLoading(false));
     }, []);
+
     return (
         <div className="bg-primary-1 min-h-screen">
             <div

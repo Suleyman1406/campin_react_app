@@ -2,11 +2,9 @@ import useAuth from 'context/auth';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-export const ProtectedRoute = ({ children }) => {
-    const { user } = useAuth();
-    if (!user) {
-        // user is not authenticated
-        return <Navigate to="/" />;
-    }
+export const ProtectedRoute = ({ children, isOwner = false }) => {
+    const { user, isCampsiteOwner } = useAuth();
+    if (!user || (isOwner && !isCampsiteOwner())) return <Navigate to="/" />;
+
     return children;
 };
