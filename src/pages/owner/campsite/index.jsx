@@ -1,4 +1,5 @@
 import useAuth from 'context/auth';
+import dayjs from 'dayjs';
 import { ReactComponent as CapacityIcon } from 'images/icons/capacity.svg';
 import { ReactComponent as ChildIcon } from 'images/icons/child.svg';
 import { ReactComponent as EditIcon } from 'images/icons/edit.svg';
@@ -12,7 +13,10 @@ import { Link } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 import { getCampsites } from 'services/campsite/getCampsites';
+import { createCampsite } from 'services/campsite-owner/createCampsite';
 import { deleteCampsite } from 'services/campsite-owner/deleteCampsite';
+import { updateCampsite } from 'services/campsite-owner/updateCampsite';
+import { getHolidayDestination } from 'services/holiday-destination/getDestination';
 import { notifyAxiosError } from 'utils';
 
 import CampsiteEditCreateModal from './editCreateModal';
@@ -22,8 +26,12 @@ const OwnerCampsites = () => {
     const [loading, setLoading] = useState(true);
     const [campsites, setCampsites] = useState([]);
     const [deleteLoading, setDeleteLoading] = useState(false);
+    const [createEditLoading, setCreateEditLoading] = useState(false);
     const [isEditCreateModalOpen, setEditCreateModalOpen] = useState(false);
+    const [editedCampsiteId, setEditedCampsiteId] = useState();
     const [selectedCampsiteIdForDelete, setSelectedCampsiteIdForDelete] = useState();
+    const [getDestinationLoading, setDestinationLoading] = useState(true);
+    const [holidayDestinations, setHolidayDestinations] = useState([]);
 
     useEffect(() => {
         getCampsites()
@@ -43,6 +51,13 @@ const OwnerCampsites = () => {
 
     const onCloseModal = useCallback(() => setSelectedCampsiteIdForDelete(), []);
 
+    useEffect(() => {
+        getHolidayDestination()
+            .then((res) => setHolidayDestinations(res.data))
+            .catch((err) => notifyAxiosError(err))
+            .finally(() => setDestinationLoading(false));
+    }, []);
+
     const onCampsiteDelete = useCallback(() => {
         setDeleteLoading(true);
         deleteCampsite(selectedCampsiteIdForDelete)
@@ -59,6 +74,37 @@ const OwnerCampsites = () => {
             .catch((err) => notifyAxiosError(err))
             .finally(() => setDeleteLoading(false));
     }, [selectedCampsiteIdForDelete]);
+
+    const onCreateEditSubmit = useCallback(
+        (values) => {
+            setCreateEditLoading(true);
+            if (!editedCampsiteId) {
+                createCampsite(values)
+                    .then((res) => {
+                        if (res.data && res.data.succeeded) {
+                            toast.success(res.data.message);
+                            setCampsites((prev) => [...prev, res.data.body]);
+                            setEditCreateModalOpen(false);
+                        }
+                    })
+                    .catch((err) => notifyAxiosError(err))
+                    .finally(() => setCreateEditLoading(false));
+            } else {
+                values.seasonStartDate = dayjs(values.seasonStartDate).format('YYYY/MM/DD');
+                values.seasonCloseDate = dayjs(values.seasonCloseDate).format('YYYY/MM/DD');
+                updateCampsite({ ...values, campsiteId: editedCampsiteId })
+                    .then((res) => {
+                        if (res.data && res.data.succeeded) {
+                            toast.success(res.data.message);
+                            setEditCreateModalOpen(false);
+                        }
+                    })
+                    .catch((err) => notifyAxiosError(err))
+                    .finally(() => setCreateEditLoading(false));
+            }
+        },
+        [editedCampsiteId],
+    );
     return (
         <div
             className="bg-primary-1 min-h-screen bg-bottom bg-no-repeat bg-cover"
@@ -113,7 +159,15 @@ const OwnerCampsites = () => {
                                                     {campsite.name}
                                                 </h3>
                                                 <div className="flex items-center text-xl gap-x-6 mr-2">
-                                                    <EditIcon className="cursor-pointer hover:scale-105 duration-100 fill-orange-400" />
+                                                    <EditIcon
+                                                        onClick={() => {
+                                                            setEditedCampsiteId(
+                                                                campsite.campsiteId,
+                                                            );
+                                                            setEditCreateModalOpen(true);
+                                                        }}
+                                                        className="cursor-pointer hover:scale-105 duration-100 fill-orange-400"
+                                                    />
                                                     <TrashIcon
                                                         onClick={() =>
                                                             setSelectedCampsiteIdForDelete(
@@ -168,7 +222,15 @@ const OwnerCampsites = () => {
                 isModalOpen={!!selectedCampsiteIdForDelete}
             />
             <CampsiteEditCreateModal
-                onCloseModal={() => setEditCreateModalOpen(false)}
+                getDestinationLoading={getDestinationLoading}
+                holidayDestinations={holidayDestinations}
+                editedCampsiteId={editedCampsiteId}
+                onSubmit={onCreateEditSubmit}
+                createEditLoading={createEditLoading}
+                onCloseModal={() => {
+                    setEditCreateModalOpen(false);
+                    setEditedCampsiteId();
+                }}
                 isModalOpen={isEditCreateModalOpen}
             />
         </div>
