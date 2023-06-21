@@ -1,4 +1,4 @@
-import Footer from 'common/footer';
+import Footer from 'components/footer';
 import React from 'react';
 
 import Experiences from './experiences';

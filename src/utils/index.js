@@ -28,3 +28,7 @@ export function notifyAxiosError(error) {
 export function truncate(str, n) {
     return str.length > n ? str.slice(0, n - 1) + '...' : str;
 }
+
+export function removeEmpty(obj) {
+    return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null && v != ''));
+}

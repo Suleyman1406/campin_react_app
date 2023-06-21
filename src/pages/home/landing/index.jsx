@@ -3,11 +3,12 @@ import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import Navbar from 'common/navbar';
+import Navbar from 'components/navbar';
 import { CITIES, PERSON_COUNT } from 'const';
 import { ReactComponent as ArrowRightIcon } from 'images/icons/arrow-right.svg';
 import LandingBg from 'images/landing_bg.jpeg';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const LandingSection = () => {
     return (
@@ -27,12 +28,14 @@ const LandingSection = () => {
             </div>
             <div className="relative mt-[80px] md:mt-[170px] lg:min-h-[216px] flex flex-col lg:block">
                 <div className="hidden lg:block absolute bg-white w-[80%] max-w-[1440px] 3xl:w-[65%] h-[216px] duration-100"></div>
-                <div className="order-2 mx-auto lg:absolute bg-primary-1 w-[320px] md:w-[768px] lg:w-[170px] rounded-b-2xl lg:rounded-none lg:rounded-r-2xl lg:ml-[min(80%,1440px)] lg:3xl:ml-[65%] h-[128px] lg:h-[216px] flex gap-x-3 items-center justify-center font-play-fair px-5 hover:cursor-pointer duration-200 group">
-                    <h3 className="text-[36px] text-white group-hover:scale-105 duration-150">
-                        Book Now
-                    </h3>
-                    <ArrowRightIcon className="group-hover:scale-110 duration-150" />
-                </div>
+                <Link to="/campsite">
+                    <div className="order-2 mx-auto lg:absolute bg-primary-1 w-[320px] md:w-[768px] lg:w-[170px] rounded-b-2xl lg:rounded-none lg:rounded-r-2xl lg:ml-[min(80%,1440px)] lg:3xl:ml-[65%] h-[128px] lg:h-[216px] flex gap-x-3 items-center justify-center font-play-fair px-5 hover:cursor-pointer duration-200 group">
+                        <h3 className="text-[36px] text-white group-hover:scale-105 duration-150">
+                            Book Now
+                        </h3>
+                        <ArrowRightIcon className="group-hover:scale-110 duration-150" />
+                    </div>
+                </Link>
                 <div className="rounded-t-2xl lg:rounded-none order-1 bg-white lg:bg-transparent duration-75 w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 xl:flex gap-5 gap-x-1 lg:gap-x-5 py-10 xl:py-[74px]">
                     <Autocomplete
                         disablePortal

@@ -40,21 +40,30 @@ const Footer = () => {
                 </div>
                 <div className="flex flex-col text-[18px] gap-y-3">
                     <h5 className="font-bold mb-1 text-[24px]">Menu</h5>
-                    <Link className="hover:text-primary-1 duration-100" to="/">
+                    <a href="#" className="hover:text-primary-1 duration-100">
                         Home
-                    </Link>
-                    <Link className="hover:text-primary-1 duration-100" to="/">
+                    </a>
+                    <a
+                        href="#home_popular_destinations_section"
+                        className="hover:text-primary-1 duration-100"
+                    >
                         Explore
-                    </Link>
-                    <Link className="hover:text-primary-1 duration-100" to="/">
+                    </a>
+                    <a
+                        href="#home_special_offers_section"
+                        className="hover:text-primary-1 duration-100"
+                    >
                         Travel
-                    </Link>
-                    <Link className="hover:text-primary-1 duration-100" to="/">
+                    </a>
+                    <a href="#home_blog_section" className="hover:text-primary-1 duration-100">
                         Blog
-                    </Link>
-                    <Link className="hover:text-primary-1 duration-100" to="/">
-                        Pricing
-                    </Link>
+                    </a>
+                    <a
+                        href="#home_experiences_section"
+                        className="hover:text-primary-1 duration-100"
+                    >
+                        Experiences
+                    </a>
                 </div>
                 <div className="flex flex-col text-[18px] gap-y-3">
                     <h5 className="font-bold mb-1 text-[24px]">Information</h5>

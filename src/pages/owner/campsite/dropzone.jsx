@@ -1,6 +1,9 @@
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ClipLoader } from 'react-spinners';
+import { toast } from 'react-toastify';
+import { uploadCampsiteImg } from 'services/upload/uploadCampsiteImg';
+import { notifyAxiosError } from 'utils';
 
 // interface IProps {
 //     uploadLoading: boolean;
@@ -9,7 +12,12 @@ import { ClipLoader } from 'react-spinners';
 //     setUploadLoading: (val: boolean) => void;
 // }
 
-export const ImgDropzone = ({ setUploadLoading, setUploadedFile, uploadLoading, uploadedFile }) => {
+export const ImgDropzone = ({
+    setUploadedFileUrls,
+    uploadedFileUrls,
+    setUploadLoading,
+    uploadLoading,
+}) => {
     const baseStyle = {
         flex: 1,
         display: 'flex',
@@ -40,33 +48,23 @@ export const ImgDropzone = ({ setUploadLoading, setUploadedFile, uploadLoading, 
 
     const formData = new FormData();
     const onDropAccepted = React.useCallback((acceptedFiles) => {
-        formData.append('File', acceptedFiles[0]);
+        acceptedFiles.map((file) => {
+            formData.append('file', file);
+        });
         setUploadLoading(true);
-        setUploadedFile(null);
-        console.warn(acceptedFiles);
-        // orderService
-        //     .uploadShippingFile(formData)
-        //     .then((res) => {
-        //         if (!res || !res.filePath) {
-        //             return notifyError('Error occured!');
-        //         }
-        //         setUploadedFile({
-        //             filePath: res.filePath,
-        //             fileName: acceptedFiles[0].name,
-        //             size: acceptedFiles[0].size,
-        //         });
-        //         setUploadLoading(false);
-        //         toast.success('File succesfully added !', {
-        //             position: toast.POSITION.TOP_RIGHT,
-        //         });
-        //         formData.delete('File');
-        //     })
-        //     .catch((err) => {
-        //         console.warn(err);
-
-        //         notifyRequestErr(err);
-        //     })
-        //     .finally(() => setUploadLoading(false));
+        setUploadedFileUrls([]);
+        uploadCampsiteImg(formData)
+            .then((res) => {
+                if (res.data && res.data.succeeded) {
+                    formData.delete('file');
+                    setUploadedFileUrls(res.data.body);
+                    toast.success('File succesfully added !');
+                } else {
+                    toast.error(res.data.message);
+                }
+            })
+            .catch((err) => notifyAxiosError(err))
+            .finally(() => setUploadLoading(false));
     }, []);
 
     const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject, isDragActive } =
@@ -121,12 +119,9 @@ export const ImgDropzone = ({ setUploadLoading, setUploadedFile, uploadLoading, 
                         <p className="text-txt-gray text-xs">
                             (10 is the maximum number of img file you can drop here)
                         </p>
-                        {uploadedFile && (
+                        {uploadedFileUrls.length > 0 && (
                             <aside>
-                                <h4>Uploaded file</h4>
-                                <ul>{`${uploadedFile.fileName}${
-                                    uploadedFile.size ? ` - ${uploadedFile.size} bytes` : ''
-                                }`}</ul>
+                                <h4>{uploadedFileUrls.length} file uploaded</h4>
                             </aside>
                         )}
                         <ClipLoader loading={uploadLoading} className="mr-4" />

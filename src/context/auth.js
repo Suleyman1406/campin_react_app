@@ -110,6 +110,7 @@ export function AuthProvider({ children }) {
             user,
             error,
             loading,
+            setUser,
             loginFunc,
             logoutFunc,
             registerFunc,

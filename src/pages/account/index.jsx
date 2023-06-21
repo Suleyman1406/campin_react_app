@@ -9,14 +9,25 @@ import { ClipLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
 import { editUserInfo } from 'services/user/editUserInfo';
 import { notifyAxiosError } from 'utils';
+import * as Yup from 'yup';
+
+const EditAccounValidationSchema = Yup.object().shape({
+    name: Yup.string().min(4, 'Too Short!').max(30, 'Too Long!').required('Name is required.'),
+    surname: Yup.string()
+        .min(4, 'Too Short!')
+        .max(30, 'Too Long!')
+        .required('Surname is required.'),
+    email: Yup.string().email('Invalid email').required('Email is required.'),
+});
 
 const Account = () => {
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
     const [isLoading, setLoading] = useState(false);
     const onSubmit = useCallback((values) => {
         setLoading(true);
         editUserInfo({ ...values, userID: user.userID ?? user.id })
-            .then(() => {
+            .then((res) => {
+                setUser(res.data);
                 toast.success('User info successfully edited.');
             })
             .catch((err) => notifyAxiosError(err))
@@ -61,7 +72,7 @@ const Account = () => {
                             gender: user.gender ?? 0,
                             phoneNumber: user.phoneNumber ?? '',
                         }}
-                        // validationSchema={LoginValidationSchema}
+                        validationSchema={EditAccounValidationSchema}
                         onSubmit={onSubmit}
                     >
                         {({ values, setFieldValue, errors, touched, setFieldTouched }) => (
@@ -89,7 +100,7 @@ const Account = () => {
                                             <EditIcon className="absolute left-4 top-4" />
                                         </div>
                                     </div>
-                                    <p className="text-red-500 min-h-[24px] -mb-4 mt-1">
+                                    <p className="lg:ml-[136px] text-red-500 min-h-[24px] -mb-4 mt-1">
                                         {errors.name && touched.name ? errors.name : ''}
                                     </p>
                                 </div>
@@ -116,7 +127,7 @@ const Account = () => {
                                             <EditIcon className="absolute left-4 top-4" />
                                         </div>
                                     </div>
-                                    <p className="text-red-500 min-h-[24px] -mb-4 mt-1">
+                                    <p className="lg:ml-[136px] text-red-500 min-h-[24px] -mb-4 mt-1">
                                         {errors.surname && touched.surname ? errors.surname : ''}
                                     </p>
                                 </div>
@@ -144,7 +155,7 @@ const Account = () => {
                                             <EditIcon className="absolute left-4 top-4" />
                                         </div>
                                     </div>
-                                    <p className="text-red-500 min-h-[24px] -mb-4 mt-1">
+                                    <p className="lg:ml-[136px] text-red-500 min-h-[24px] -mb-4 mt-1">
                                         {errors.email && touched.email ? errors.email : ''}
                                     </p>
                                 </div>
@@ -172,7 +183,7 @@ const Account = () => {
                                             <EditIcon className="absolute left-4 top-4" />
                                         </div>
                                     </div>
-                                    <p className="text-red-500 min-h-[24px] -mb-4 mt-1">
+                                    <p className="lg:ml-[136px] text-red-500 min-h-[24px] -mb-4 mt-1">
                                         {errors.role && touched.role ? errors.role : ''}
                                     </p>
                                 </div>

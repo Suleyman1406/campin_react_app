@@ -4,6 +4,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { Form, Formik } from 'formik';
+import { ReactComponent as CloseIcon } from 'images/icons/close.svg';
 import { ReactComponent as EditIcon } from 'images/icons/edit.svg';
 import React, { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
@@ -42,6 +43,7 @@ const CampsiteEditCreateModal = ({
     const [editedCampsite, setEditedCampsite] = useState();
     const [uploadLoading, setUploadLoading] = useState(false);
     const [uploadedFile, setUploadedFile] = useState(null);
+    const [uploadedFileUrls, setUploadedFileUrls] = useState([]);
 
     useEffect(() => {
         if (editedCampsiteId && isModalOpen && holidayDestinations) {
@@ -59,6 +61,7 @@ const CampsiteEditCreateModal = ({
                 .finally(() => setEditCampsiteLoading(false));
         } else {
             setEditedCampsite();
+            setUploadedFileUrls([]);
         }
     }, [editedCampsiteId, isModalOpen, holidayDestinations]);
 
@@ -87,13 +90,21 @@ const CampsiteEditCreateModal = ({
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                                <Dialog.Title
-                                    as="h3"
-                                    className="text-2xl font-medium leading-6 text-gray-900"
-                                >
-                                    Create Campsite
-                                </Dialog.Title>
+                            <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all ">
+                                <div className="flex justify-between">
+                                    <Dialog.Title
+                                        as="h3"
+                                        className="text-2xl font-medium leading-6 text-gray-900"
+                                    >
+                                        {editedCampsiteId ? 'Edit' : 'Create'} Campsite
+                                    </Dialog.Title>
+                                    <CloseIcon
+                                        onClick={() => {
+                                            onCloseModal();
+                                        }}
+                                        className="cursor-pointer w-[25px] h-[25px] duration-100 hover:scale-105"
+                                    />
+                                </div>
 
                                 <Formik
                                     initialValues={{
@@ -129,7 +140,7 @@ const CampsiteEditCreateModal = ({
                                     }}
                                     enableReinitialize
                                     validationSchema={CreateValidationSchema}
-                                    onSubmit={onSubmit}
+                                    onSubmit={(values) => onSubmit(values, uploadedFileUrls)}
                                 >
                                     {({
                                         values,
@@ -139,7 +150,7 @@ const CampsiteEditCreateModal = ({
                                         setFieldTouched,
                                     }) => (
                                         <Form>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 my-6">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 my-6 ">
                                                 <div>
                                                     <div className="relative">
                                                         <input
@@ -672,19 +683,21 @@ const CampsiteEditCreateModal = ({
                                                         uploadedFile={uploadedFile}
                                                         uploadLoading={uploadLoading}
                                                         setUploadedFile={setUploadedFile}
+                                                        uploadedFileUrls={uploadedFileUrls}
                                                         setUploadLoading={setUploadLoading}
+                                                        setUploadedFileUrls={setUploadedFileUrls}
                                                     />
                                                 </div>
                                             </div>
                                             <button
                                                 type="submit"
-                                                disabled={createEditLoading}
+                                                disabled={createEditLoading || uploadLoading}
                                                 className="w-full rounded-xl bg-primary-1 py-3 text-white font-bold leading-6 border-[3px] border-transparent hover:border-primary-1 hover:text-primary-1 hover:bg-transparent disabled:hover:border-transparent disabled:hover:text-white disabled:hover:bg-primary-1 disabled:opacity-80 disabled:cursor-wait duration-200 flex items-center justify-center"
                                             >
                                                 <div className="w-[30px] h-[30px] flex items-center -ml-[30px] justify-center">
                                                     <ClipLoader
                                                         color={'white'}
-                                                        loading={createEditLoading}
+                                                        loading={createEditLoading || uploadLoading}
                                                         size={20}
                                                     />
                                                 </div>

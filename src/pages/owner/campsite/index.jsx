@@ -6,6 +6,7 @@ import { ReactComponent as EditIcon } from 'images/icons/edit.svg';
 import { ReactComponent as LocationIcon } from 'images/icons/location.svg';
 import { ReactComponent as PersonIcon } from 'images/icons/person.svg';
 import { ReactComponent as TrashIcon } from 'images/icons/trash.svg';
+import NotFoundImg from 'images/image-not-found.png';
 import LandingBg from 'images/landing_bg.jpeg';
 import CampsiteDeleteModal from 'pages/owner/campsite/deleteModal';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -76,8 +77,9 @@ const OwnerCampsites = () => {
     }, [selectedCampsiteIdForDelete]);
 
     const onCreateEditSubmit = useCallback(
-        (values) => {
+        (values, uploadedFileUrls) => {
             setCreateEditLoading(true);
+            if (uploadedFileUrls.length > 0) values.imageUrls = uploadedFileUrls;
             if (!editedCampsiteId) {
                 createCampsite(values)
                     .then((res) => {
@@ -95,8 +97,16 @@ const OwnerCampsites = () => {
                 updateCampsite({ ...values, campsiteId: editedCampsiteId })
                     .then((res) => {
                         if (res.data && res.data.succeeded) {
-                            toast.success(res.data.message);
+                            setEditedCampsiteId();
                             setEditCreateModalOpen(false);
+                            toast.success(res.data.message);
+                            const idx = campsites.findIndex(
+                                (c) => res.data.body.campsiteId === c.campsiteId,
+                            );
+                            if (idx !== -1) {
+                                campsites[idx] = res.data.body;
+                                setCampsites([...campsites]);
+                            }
                         }
                     })
                     .catch((err) => notifyAxiosError(err))
@@ -137,7 +147,7 @@ const OwnerCampsites = () => {
                             </span>
                         </div>
                     ) : (
-                        <div className="flex flex-col gap-y-8 mt-6">
+                        <div className="flex flex-col gap-y-8 mt-6 max-h-[80vh] overflow-y-auto customscrollbar pr-2">
                             {campsites &&
                                 campsites.map((campsite) => (
                                     <div
@@ -149,11 +159,16 @@ const OwnerCampsites = () => {
                                         }}
                                     >
                                         <img
-                                            src="https://www.evrensel.net/upload/dosya/190060.jpg"
+                                            src={campsite.defaultImage ?? ''}
                                             alt="campsite"
-                                            className="w-[200px] h-[200px] object-cover rounded-l-lg"
+                                            loading="lazy"
+                                            onError={({ currentTarget }) => {
+                                                currentTarget.onerror = null; // prevents looping
+                                                currentTarget.src = NotFoundImg;
+                                            }}
+                                            className="w-[240px] h-[210px] object-cover rounded-l-lg"
                                         />
-                                        <div className="w-full px-4 py-3">
+                                        <div className="grow px-4 py-3">
                                             <div className="flex justify-between items-center">
                                                 <h3 className="text-xl text-primary-1 font-bold">
                                                     {campsite.name}
@@ -178,10 +193,9 @@ const OwnerCampsites = () => {
                                                     />
                                                 </div>
                                             </div>
-                                            <p className="h-[100px] overflow-auto mt-2 text-lg w-[70%]">
+                                            <p className="h-[120px] overflow-auto mt-2 text-lg w-[70%]">
                                                 {campsite.description}
                                             </p>
-                                            {/* <div className="flex justify-between"> */}
                                             <div className="flex gap-x-6 text-2xl items-center">
                                                 <div className="flex gap-x-2 items-center text-primary-1">
                                                     <CapacityIcon />
@@ -207,7 +221,6 @@ const OwnerCampsites = () => {
                                                     <LocationIcon />
                                                 </Link>
                                             </div>
-                                            {/* </div> */}
                                         </div>
                                     </div>
                                 ))}
