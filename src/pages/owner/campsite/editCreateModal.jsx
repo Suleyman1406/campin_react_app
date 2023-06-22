@@ -16,10 +16,7 @@ import { ImgDropzone } from './dropzone';
 
 const CreateValidationSchema = Yup.object().shape({
     name: Yup.string().min(4, 'Too Short!').max(50, 'Too Long!').required('Name is required.'),
-    description: Yup.string()
-        .min(20, 'Too Short!')
-        .max(200, 'Too Long!')
-        .required('Description is required.'),
+    description: Yup.string().min(20, 'Too Short!').required('Description is required.'),
     adultPrice: Yup.number().required('Adult price is required.'),
     childPrice: Yup.number().required('Child price is required.'),
     seasonStartDate: Yup.string().required('Season start date is required.'),
@@ -356,7 +353,7 @@ const CampsiteEditCreateModal = ({
                                                             type="text"
                                                             id="childPrice"
                                                             name="childPrice"
-                                                            placeholder="Adult Price"
+                                                            placeholder="Child Price"
                                                             value={values['childPrice']}
                                                             onChange={(e) =>
                                                                 setFieldValue(
@@ -523,7 +520,7 @@ const CampsiteEditCreateModal = ({
                                                                 color="warning"
                                                             />
                                                         }
-                                                        label="Has Electricity"
+                                                        label="Has Toilet"
                                                     />
                                                     <FormControlLabel
                                                         control={
