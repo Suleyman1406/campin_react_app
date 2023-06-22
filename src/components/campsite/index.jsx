@@ -70,9 +70,11 @@ const Campsite = ({ campsite }) => {
                         <LocationIcon className="w-7 h-7" />
                         <span className="text-[9px]">Location</span>
                     </Link>
-                    <button className="grow py-2 bg-primary-1 text-white hover:text-primary-1 border-2 border-transparent hover:border-primary-1 hover:bg-transparent rounded-md duration-100 ">
-                        Detail
-                    </button>
+                    <Link to={`/campsite/${campsite.campsiteId}`} className="grow">
+                        <button className="w-full py-2 bg-primary-1 text-white hover:text-primary-1 border-2 border-transparent hover:border-primary-1 hover:bg-transparent rounded-md duration-100 ">
+                            Detail
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

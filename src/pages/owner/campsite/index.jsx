@@ -85,7 +85,7 @@ const OwnerCampsites = () => {
                     .then((res) => {
                         if (res.data && res.data.succeeded) {
                             toast.success(res.data.message);
-                            setCampsites((prev) => [...prev, res.data.body]);
+                            setCampsites((prev) => [res.data.body, ...prev]);
                             setEditCreateModalOpen(false);
                         }
                     })

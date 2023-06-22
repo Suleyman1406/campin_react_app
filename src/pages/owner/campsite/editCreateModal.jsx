@@ -323,7 +323,7 @@ const CampsiteEditCreateModal = ({
                                                 <div>
                                                     <div className="relative">
                                                         <input
-                                                            type="text"
+                                                            type="number"
                                                             id="adultPrice"
                                                             name="adultPrice"
                                                             placeholder="Adult Price"
@@ -350,7 +350,7 @@ const CampsiteEditCreateModal = ({
                                                 <div>
                                                     <div className="relative">
                                                         <input
-                                                            type="text"
+                                                            type="number"
                                                             id="childPrice"
                                                             name="childPrice"
                                                             placeholder="Child Price"
@@ -425,7 +425,7 @@ const CampsiteEditCreateModal = ({
                                                 <div>
                                                     <div className="relative">
                                                         <input
-                                                            type="text"
+                                                            type="number"
                                                             id="capacity"
                                                             name="capacity"
                                                             placeholder="Capacity"

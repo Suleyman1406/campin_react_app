@@ -16,7 +16,7 @@ const LandingSection = () => {
             className="min-h-screen bg-bottom bg-no-repeat bg-cover pb-[270px]"
             style={{ backgroundImage: `url(${LandingBg})` }}
         >
-            <Navbar />
+            <Navbar isLandingPage={true} />
             <div className="duration-75 w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto mt-[80px] md:mt-[140px] text-white">
                 <h1 className="text-[40px] md:text-[84px] font-play-fair leading-[53px] md:leading-[112px]">
                     Start your unforgettable <br />

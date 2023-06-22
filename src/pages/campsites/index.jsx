@@ -187,17 +187,24 @@ const Campsites = () => {
                         <span className="text-2xl text-primary-1 font-play-fair">Loading...</span>
                     </div>
                 ) : (
-                    <div
-                        style={{
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                        }}
-                        className="grid gap-4"
-                    >
-                        {campsites &&
-                            campsites.map((campsite) => (
-                                <Campsite key={campsite.campsiteId} campsite={campsite} />
-                            ))}
-                    </div>
+                    <>
+                        <div
+                            style={{
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                            }}
+                            className="grid gap-4"
+                        >
+                            {campsites &&
+                                campsites.map((campsite) => (
+                                    <Campsite key={campsite.campsiteId} campsite={campsite} />
+                                ))}
+                        </div>
+                        {campsites && campsites.length === 0 && (
+                            <div className="mt-[200px] font-play-fair text-center text-3xl">
+                                Campsite Not Found
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </>

@@ -4,43 +4,45 @@ import { ReactComponent as BurgerIcon } from 'images/icons/burger.svg';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ isLandingPage = false }) => {
     const { user, logoutFunc, isCampsiteOwner } = useAuth();
 
     return (
-        <div className="duration-75 w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] text-white mx-auto  py-10 flex justify-between items-center text-xl">
+        <div className=" duration-75 w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] text-white mx-auto  py-10 flex justify-between items-center text-xl">
             <Link to="/" className="font-play-fair text-4xl">
                 Campin
             </Link>
-            <div className="lg:flex gap-x-8 hidden">
-                <a href="#" className="hover:scale-105 pb-1 border-b-[3px] border-primary-1">
-                    Home
-                </a>
-                <a
-                    href="#home_popular_destinations_section"
-                    className="hover:scale-105 pb-1 border-b-[3px] border-transparent hover:border-primary-2 duration-100"
-                >
-                    Explore
-                </a>
-                <a
-                    href="#home_special_offers_section"
-                    className="hover:scale-105 pb-1 border-b-[3px] border-transparent hover:border-primary-2 duration-100"
-                >
-                    Travel
-                </a>
-                <a
-                    href="#home_blog_section"
-                    className="hover:scale-105 pb-1 border-b-[3px] border-transparent hover:border-primary-2 duration-100"
-                >
-                    Blog
-                </a>
-                <a
-                    href="#home_experiences_section"
-                    className="hover:scale-105 pb-1 border-b-[3px] border-transparent hover:border-primary-2 duration-100"
-                >
-                    Experiences
-                </a>
-            </div>
+            {isLandingPage && (
+                <div className="lg:flex gap-x-8 hidden">
+                    <a href="#" className="hover:scale-105 pb-1 border-b-[3px] border-primary-1">
+                        Home
+                    </a>
+                    <a
+                        href="#home_popular_destinations_section"
+                        className="hover:scale-105 pb-1 border-b-[3px] border-transparent hover:border-primary-2 duration-100"
+                    >
+                        Explore
+                    </a>
+                    <a
+                        href="#home_special_offers_section"
+                        className="hover:scale-105 pb-1 border-b-[3px] border-transparent hover:border-primary-2 duration-100"
+                    >
+                        Travel
+                    </a>
+                    <a
+                        href="#home_blog_section"
+                        className="hover:scale-105 pb-1 border-b-[3px] border-transparent hover:border-primary-2 duration-100"
+                    >
+                        Blog
+                    </a>
+                    <a
+                        href="#home_experiences_section"
+                        className="hover:scale-105 pb-1 border-b-[3px] border-transparent hover:border-primary-2 duration-100"
+                    >
+                        Experiences
+                    </a>
+                </div>
+            )}
             {!user && (
                 <div className="gap-x-9 items-center hidden lg:flex">
                     <Link to="/login">
@@ -54,7 +56,7 @@ const Navbar = () => {
                 </div>
             )}
             {user && (
-                <Menu as="div" className="relative hidden text-left lg:inline-block">
+                <Menu as="div" className="relative hidden text-left lg:inline-block z-40">
                     <Menu.Button>
                         <div className="hidden lg:flex items-center gap-x-5 capitalize">
                             <p className="font-bold">{user.name + ' ' + user.surname}</p>
@@ -73,7 +75,7 @@ const Navbar = () => {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                     >
-                        <Menu.Items className="absolute text-center right-0 mt-2 w-[280px] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="absolute text-center right-0 mt-2 w-[280px] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ">
                             <Link
                                 to="/account"
                                 className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
@@ -98,8 +100,7 @@ const Navbar = () => {
                     </Transition>
                 </Menu>
             )}
-
-            <Menu as="div" className="relative inline-block text-left lg:hidden">
+            <Menu as="div" className="relative inline-block text-left lg:hidden z-40">
                 <div>
                     <Menu.Button className="lg:hidden inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
                         <BurgerIcon />
@@ -136,36 +137,40 @@ const Navbar = () => {
                                 Campsites
                             </Link>
                         )}
-                        <a
-                            href="#"
-                            className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
-                        >
-                            Home
-                        </a>
-                        <a
-                            href="#home_popular_destinations_section"
-                            className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
-                        >
-                            Explore
-                        </a>
-                        <a
-                            href="#home_special_offers_section"
-                            className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
-                        >
-                            Travel
-                        </a>
-                        <a
-                            href="#home_blog_section"
-                            className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
-                        >
-                            Blog
-                        </a>
-                        <a
-                            href="#home_experiences_section"
-                            className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
-                        >
-                            Experiences
-                        </a>
+                        {isLandingPage && (
+                            <>
+                                <a
+                                    href="#"
+                                    className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                                >
+                                    Home
+                                </a>
+                                <a
+                                    href="#home_popular_destinations_section"
+                                    className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                                >
+                                    Explore
+                                </a>
+                                <a
+                                    href="#home_special_offers_section"
+                                    className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                                >
+                                    Travel
+                                </a>
+                                <a
+                                    href="#home_blog_section"
+                                    className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                                >
+                                    Blog
+                                </a>
+                                <a
+                                    href="#home_experiences_section"
+                                    className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                                >
+                                    Experiences
+                                </a>
+                            </>
+                        )}
                         {!user && (
                             <>
                                 <Link
