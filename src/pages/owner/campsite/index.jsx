@@ -13,9 +13,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import { toast } from 'react-toastify';
-import { getCampsites } from 'services/campsite/getCampsites';
 import { createCampsite } from 'services/campsite-owner/createCampsite';
 import { deleteCampsite } from 'services/campsite-owner/deleteCampsite';
+import { getOwnerCampsites } from 'services/campsite-owner/getOwnerCampsites';
 import { updateCampsite } from 'services/campsite-owner/updateCampsite';
 import { getHolidayDestination } from 'services/holiday-destination/getDestination';
 import { notifyAxiosError } from 'utils';
@@ -35,7 +35,7 @@ const OwnerCampsites = () => {
     const [holidayDestinations, setHolidayDestinations] = useState([]);
 
     useEffect(() => {
-        getCampsites()
+        getOwnerCampsites()
             .then((res) => {
                 if (res.data && res.data.succeeded) {
                     setCampsites(
@@ -63,7 +63,6 @@ const OwnerCampsites = () => {
         setDeleteLoading(true);
         deleteCampsite(selectedCampsiteIdForDelete)
             .then((res) => {
-                console.warn(res);
                 setCampsites([
                     ...campsites.filter(
                         (campsite) => campsite.campsiteId !== selectedCampsiteIdForDelete,
@@ -161,18 +160,22 @@ const OwnerCampsites = () => {
                                         <img
                                             src={campsite.defaultImage ?? ''}
                                             alt="campsite"
-                                            loading="lazy"
                                             onError={({ currentTarget }) => {
                                                 currentTarget.onerror = null; // prevents looping
                                                 currentTarget.src = NotFoundImg;
                                             }}
-                                            className="w-[240px] h-[210px] object-cover rounded-l-lg"
+                                            className="w-[250px] h-[232px] object-cover rounded-l-lg"
                                         />
                                         <div className="grow px-4 py-3">
                                             <div className="flex justify-between items-center">
-                                                <h3 className="text-xl text-primary-1 font-bold">
-                                                    {campsite.name}
-                                                </h3>
+                                                <Link
+                                                    to={`/campsite/${campsite.campsiteId}`}
+                                                    target="_blank"
+                                                >
+                                                    <h3 className="text-xl text-primary-1 font-bold hover:underline">
+                                                        {campsite.name}
+                                                    </h3>
+                                                </Link>
                                                 <div className="flex items-center text-xl gap-x-6 mr-2">
                                                     <EditIcon
                                                         onClick={() => {
@@ -193,7 +196,7 @@ const OwnerCampsites = () => {
                                                     />
                                                 </div>
                                             </div>
-                                            <p className="h-[120px] overflow-auto mt-2 text-lg w-[70%]">
+                                            <p className="h-[132px] customscrollbar overflow-auto my-2 text-lg w-[70%]">
                                                 {campsite.description}
                                             </p>
                                             <div className="flex gap-x-6 text-2xl items-center">

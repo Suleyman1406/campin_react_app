@@ -35,7 +35,6 @@ const CampsiteDetail = () => {
         setDataLoading(true);
         getCampsiteById(id)
             .then((res) => {
-                console.warn(res.data.body);
                 if (res.data && res.data.succeeded) {
                     setCampsiteDetail(res.data.body);
                 }

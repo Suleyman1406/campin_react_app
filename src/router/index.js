@@ -1,9 +1,15 @@
 import { ProtectedRoute } from 'components/auth-guard/protected';
 import Account from 'pages/account';
+import CampsiteTable from 'pages/admin/campsite-table';
+import AdminDashboard from 'pages/admin/dashboard';
+import AdminUserTable from 'pages/admin/user-table';
 import CampsiteDetail from 'pages/campsite-detail';
 import Campsites from 'pages/campsites';
 import MakeReservation from 'pages/make-reservation';
+import PageNotFound from 'pages/not-found';
 import OwnerCampsites from 'pages/owner/campsite';
+import OwnerReservations from 'pages/owner/reservation';
+import Reservations from 'pages/reservation';
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -49,6 +55,14 @@ export const router = createBrowserRouter([
         ),
     },
     {
+        path: '/reservations',
+        element: (
+            <ProtectedRoute>
+                <Reservations />
+            </ProtectedRoute>
+        ),
+    },
+    {
         path: '/owner/campsite',
         element: (
             <ProtectedRoute isOwner={true}>
@@ -56,4 +70,48 @@ export const router = createBrowserRouter([
             </ProtectedRoute>
         ),
     },
+    {
+        path: '/owner/reservations',
+        element: (
+            <ProtectedRoute isOwner={true}>
+                <OwnerReservations />
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: '/admin/dashboard',
+        element: (
+            <ProtectedRoute isAdmin={true}>
+                <AdminDashboard />
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: '/admin/user-table',
+        element: (
+            <ProtectedRoute isAdmin={true}>
+                <AdminUserTable />
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: '/admin/campsite-table',
+        element: (
+            <ProtectedRoute isAdmin={true}>
+                <CampsiteTable />
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: '*',
+        element: <PageNotFound />,
+    },
+    // {
+    //     path: '/admin/tables',
+    //     element: (
+    //         <ProtectedRoute isAdmin={true}>
+    //             <AdminTables />
+    //         </ProtectedRoute>
+    //     ),
+    // },
 ]);

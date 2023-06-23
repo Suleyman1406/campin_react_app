@@ -87,7 +87,12 @@ export function AuthProvider({ children }) {
         localStorage.removeItem('jwt');
     }
 
-    function isCampsiteOwner() {
+    function getIsBasicUser() {
+        if (!user || (user.role !== ROLES.USER && user.roles?.[0] !== ROLES.USER)) return false;
+        return true;
+    }
+
+    function getIsCampsiteOwner() {
         if (
             !user ||
             (user.role !== ROLES.CAMPSITE_OWNER && user.roles?.[0] !== ROLES.CAMPSITE_OWNER)
@@ -96,6 +101,10 @@ export function AuthProvider({ children }) {
         return true;
     }
 
+    function getIsAdmin() {
+        if (!user || (user.role !== ROLES.ADMIN && user.roles?.[0] !== ROLES.ADMIN)) return false;
+        return true;
+    }
     // Make the provider update only when it should.
     // We only want to force re-renders if the user,
     // loading or error states change.
@@ -109,12 +118,14 @@ export function AuthProvider({ children }) {
         () => ({
             user,
             error,
+            getIsAdmin,
             loading,
             setUser,
             loginFunc,
             logoutFunc,
             registerFunc,
-            isCampsiteOwner,
+            getIsBasicUser,
+            getIsCampsiteOwner,
         }),
         [user, loading, error],
     );

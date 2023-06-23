@@ -7,13 +7,13 @@ const Map = ({ position, containerStyle }) => {
         googleMapsApiKey: 'AIzaSyA_0XSZLfnEm3iBHA2yd_1nhu8dRojCeT8',
     });
 
-    const [_, setMap] = React.useState(null);
+    const [, setMap] = React.useState(null);
 
     const onLoad = React.useCallback(function callback(map) {
         setMap(map);
     }, []);
 
-    const onUnmount = React.useCallback(function callback(map) {
+    const onUnmount = React.useCallback(function callback() {
         setMap(null);
     }, []);
 

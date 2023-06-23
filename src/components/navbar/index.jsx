@@ -5,7 +5,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Navbar = ({ isLandingPage = false }) => {
-    const { user, logoutFunc, isCampsiteOwner } = useAuth();
+    const { user, logoutFunc, getIsCampsiteOwner, getIsAdmin, getIsBasicUser } = useAuth();
 
     return (
         <div className=" duration-75 w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] text-white mx-auto  py-10 flex justify-between items-center text-xl">
@@ -61,8 +61,8 @@ const Navbar = ({ isLandingPage = false }) => {
                         <div className="hidden lg:flex items-center gap-x-5 capitalize">
                             <p className="font-bold">{user.name + ' ' + user.surname}</p>
                             <img
-                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-                                className="rounded-full w-[50px] h-[50px] object-cover"
+                                src="https://militaryhealthinstitute.org/wp-content/uploads/sites/37/2021/08/blank-profile-picture-png.png"
+                                className="rounded-full w-[50px] h-[50px] object-cover bg-white shadow-md"
                             />
                         </div>
                     </Menu.Button>
@@ -76,13 +76,29 @@ const Navbar = ({ isLandingPage = false }) => {
                         leaveTo="transform opacity-0 scale-95"
                     >
                         <Menu.Items className="absolute text-center right-0 mt-2 w-[280px] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ">
+                            {getIsAdmin() && (
+                                <Link
+                                    to="/admin/dashboard"
+                                    className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                                >
+                                    Admin
+                                </Link>
+                            )}
                             <Link
                                 to="/account"
                                 className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
                             >
                                 Account
                             </Link>
-                            {isCampsiteOwner() && (
+                            {getIsBasicUser() && (
+                                <Link
+                                    to="/reservations"
+                                    className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                                >
+                                    Reservations
+                                </Link>
+                            )}
+                            {getIsCampsiteOwner() && (
                                 <Link
                                     to="/owner/campsite"
                                     className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
@@ -90,6 +106,15 @@ const Navbar = ({ isLandingPage = false }) => {
                                     Campsites
                                 </Link>
                             )}
+                            {getIsCampsiteOwner() && (
+                                <Link
+                                    to="/owner/reservations"
+                                    className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                                >
+                                    Reservations (Owned)
+                                </Link>
+                            )}
+
                             <button
                                 onClick={() => logoutFunc()}
                                 className="w-full text-white rounded-b-md p-3 bg-primary-1 hover:opacity-70"
@@ -129,12 +154,36 @@ const Navbar = ({ isLandingPage = false }) => {
                                 <p className="font-bold text-primary-1">Account</p>
                             </Link>
                         )}
-                        {isCampsiteOwner() && (
+                        {getIsAdmin() && (
+                            <Link
+                                to="/owner/campsite"
+                                className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                            >
+                                Admin
+                            </Link>
+                        )}
+                        {getIsCampsiteOwner() && (
                             <Link
                                 to="/owner/campsite"
                                 className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
                             >
                                 Campsites
+                            </Link>
+                        )}
+                        {getIsCampsiteOwner() && (
+                            <Link
+                                to="/owner/reservations"
+                                className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                            >
+                                Reservations (Owned)
+                            </Link>
+                        )}
+                        {getIsBasicUser() && (
+                            <Link
+                                to="/reservations"
+                                className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                            >
+                                Reservations
                             </Link>
                         )}
                         {isLandingPage && (
@@ -187,7 +236,6 @@ const Navbar = ({ isLandingPage = false }) => {
                                 </Link>
                             </>
                         )}
-
                         {user && (
                             <button
                                 onClick={() => logoutFunc()}

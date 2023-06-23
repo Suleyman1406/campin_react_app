@@ -51,9 +51,9 @@ const Account = () => {
                 <div className="flex flex-col items-center py-2 lg:py-5">
                     <div className="flex flex-col items-center">
                         <img
-                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
+                            src="https://militaryhealthinstitute.org/wp-content/uploads/sites/37/2021/08/blank-profile-picture-png.png"
                             alt="profile"
-                            className="w-[100px] h-[100px] lg:w-[160px] lg:h-[160px] object-cover rounded-full"
+                            className="w-[100px] h-[100px] lg:w-[160px] lg:h-[160px] object-cover rounded-full bg-white shadow-md"
                         />
                         <div className="flex gap-x-2  items-center cursor-pointer mt-2 hover:scale-105 duration-100">
                             <span className="text-[20px]"> Change Picture </span>

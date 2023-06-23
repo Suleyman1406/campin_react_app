@@ -6,31 +6,35 @@ import Campsite from 'components/campsite';
 import dayjs from 'dayjs';
 import { Form, Formik } from 'formik';
 import LandingBg from 'images/landing_bg.jpeg';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import { getCampsiteWithFilter } from 'services/campsite/getCampsiteWithFilter';
-import { getHolidayDestination } from 'services/holiday-destination/getDestination';
+import { getCities } from 'services/city/getCities';
 import { notifyAxiosError, removeEmpty } from 'utils';
 
 const Campsites = () => {
-    const [holidayDestinations, setHolidayDestinations] = useState([]);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [cities, setCities] = useState([]);
+    const [searchParams] = useSearchParams();
     const [getDataLoading, setDataLoading] = useState(false);
     const [campsites, setCampsites] = useState([]);
-    const [getDestinationLoading, setDestinationLoading] = useState(true);
+    const [getCitiesLoading, setCitiesLoading] = useState(true);
     const navigate = useNavigate();
+    const searchParameters = useMemo(() => JSON.parse(searchParams.get('search')), [searchParams]);
+
     useEffect(() => {
-        getHolidayDestination()
-            .then((res) => setHolidayDestinations(res.data))
+        setCitiesLoading(true);
+        getCities()
+            .then((res) => {
+                setCities(res.data);
+            })
             .catch((err) => notifyAxiosError(err))
-            .finally(() => setDestinationLoading(false));
+            .finally(() => setCitiesLoading(false));
     }, []);
 
     useEffect(() => {
         setDataLoading(true);
-        const searchParametrs = searchParams.get('search');
-        getCampsiteWithFilter(JSON.parse(searchParametrs) ?? {})
+        getCampsiteWithFilter(searchParameters ?? {})
             .then((res) => {
                 if (res.data && res.data.succeeded) {
                     setCampsites(res.data.body);
@@ -38,7 +42,7 @@ const Campsites = () => {
             })
             .catch((err) => notifyAxiosError(err))
             .finally(() => setDataLoading(false));
-    }, [searchParams]);
+    }, [searchParameters]);
 
     return (
         <>
@@ -46,132 +50,148 @@ const Campsites = () => {
                 src={LandingBg}
                 className="w-screen h-screen fixed left-0 top-0 bg-bottom bg-no-repeat bg-cover -z-10"
             />
-            <div className="w-full bg-primary-1 rounded-b-[50px] py-2 relative z-10">
-                <div className="w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto duration-75 pt-4 z-10">
-                    <Link to="/" className="font-play-fair text-4xl text-white">
-                        Campin
-                    </Link>
-                    <Formik
-                        initialValues={{
-                            cityName: '',
-                            startDate: '',
-                            enDate: '',
-                        }}
-                        enableReinitialize
-                        onSubmit={(values) => {
-                            const searchValues = removeEmpty({ ...values });
-                            navigate(`?search=${encodeURIComponent(JSON.stringify(searchValues))}`);
-                        }}
-                    >
-                        {({ values, setFieldValue }) => (
-                            <Form>
-                                <div
-                                    style={{
-                                        boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
-                                    }}
-                                    className="mt-5 flex gap-5 justify-center flex-wrap mx-auto duration-75 bg-white rounded-[25px] py-4 "
-                                >
-                                    <Autocomplete
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        loading={getDestinationLoading}
-                                        isOptionEqualToValue={(option, value) =>
-                                            option.value === value.value
-                                        }
-                                        options={holidayDestinations.map((d) => ({
-                                            label: d.holidayDestinationName,
-                                            value: d.id,
-                                        }))}
-                                        onChange={(e, option) => {
-                                            setFieldValue('cityName', option?.label ?? null);
+            <div className="sticky -top-[80px]">
+                <div className="w-full bg-primary-1 rounded-b-[50px] py-2 relative z-10">
+                    <div className="w-[320px] md:w-[768px] lg:w-[1152px] xl:w-[1440px] mx-auto duration-75 pt-4 z-10">
+                        <Link to="/" className="font-play-fair text-4xl text-white">
+                            Campin
+                        </Link>
+                        <Formik
+                            initialValues={{
+                                cityName: searchParameters.cityName ?? '',
+                                startDate: searchParameters.startDate ?? '',
+                                enDate: searchParameters.enDate ?? '',
+                            }}
+                            enableReinitialize
+                            onSubmit={(values) => {
+                                const searchValues = removeEmpty({ ...values });
+                                navigate(
+                                    `?search=${encodeURIComponent(JSON.stringify(searchValues))}`,
+                                );
+                            }}
+                        >
+                            {({ values, setFieldValue }) => (
+                                <Form>
+                                    <div
+                                        style={{
+                                            boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
                                         }}
-                                        sx={{
-                                            width: '27%',
-                                            minWidth: '200px',
-                                            '& .MuiOutlinedInput-root': {
-                                                padding: '9px',
-                                            },
-                                            '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
-                                                {
-                                                    borderRadius: '8px',
-                                                    border: '1px solid #1A1D21',
-                                                },
-                                            '& .MuiOutlinedInput-root.Mui-focused': {
-                                                borderRadius: '8px',
-                                                boxShadow:
-                                                    '0px 0px 0px 4px rgba(97, 113, 67, 0.34)',
-                                            },
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField {...params} label="Destination" />
-                                        )}
-                                    />
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker
-                                            label="Season Start Date"
-                                            value={
-                                                values['startDate']
-                                                    ? dayjs(values['startDate'])
-                                                    : null
-                                            }
-                                            onChange={(value) =>
-                                                setFieldValue(
-                                                    'startDate',
-                                                    dayjs(value).format('YYYY/MM/DD'),
-                                                )
-                                            }
-                                            sx={{
-                                                width: '27%',
-                                                minWidth: '200px',
-                                                '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
-                                                    {
-                                                        borderRadius: '8px',
-                                                        border: '1px solid #1A1D21',
-                                                    },
-                                                '& .MuiOutlinedInput-root.Mui-focused': {
-                                                    borderRadius: '8px',
-                                                    boxShadow:
-                                                        '0px 0px 0px 4px rgba(97, 113, 67, 0.34)',
-                                                },
-                                            }}
-                                        />
-                                        <DatePicker
-                                            label="Season Close Date"
-                                            value={
-                                                values['enDate'] ? dayjs(values['enDate']) : null
-                                            }
-                                            onChange={(value) =>
-                                                setFieldValue(
-                                                    'enDate',
-                                                    dayjs(value).format('YYYY/MM/DD'),
-                                                )
-                                            }
-                                            sx={{
-                                                width: '27%',
-                                                minWidth: '200px',
-                                                '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
-                                                    {
-                                                        borderRadius: '8px',
-                                                        border: '1px solid #1A1D21',
-                                                    },
-                                                '& .MuiOutlinedInput-root.Mui-focused': {
-                                                    borderRadius: '8px',
-                                                    boxShadow:
-                                                        '0px 0px 0px 4px rgba(97, 113, 67, 0.34)',
-                                                },
-                                            }}
-                                        />
-                                    </LocalizationProvider>
-                                    <button
-                                        type="submit"
-                                        className="py-3 rounded text-white px-6 text-xl bg-primary-1"
+                                        className="mt-5 flex gap-5 justify-center flex-wrap mx-auto duration-75 bg-white rounded-[25px] py-4 "
                                     >
-                                        Search
-                                    </button>
-                                </div>
-                            </Form>
-                        )}
-                    </Formik>
+                                        <Autocomplete
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            loading={getCitiesLoading}
+                                            value={
+                                                cities
+                                                    .map((d) => ({
+                                                        label: d.cityName,
+                                                        value: d.id,
+                                                    }))
+                                                    .find(
+                                                        (city) => city.label === values['cityName'],
+                                                    ) ?? null
+                                            }
+                                            isOptionEqualToValue={(option, value) =>
+                                                option.value === value.value
+                                            }
+                                            options={cities.map((d) => ({
+                                                label: d.cityName,
+                                                value: d.id,
+                                            }))}
+                                            onChange={(e, option) => {
+                                                setFieldValue('cityName', option?.label ?? null);
+                                            }}
+                                            sx={{
+                                                width: '27%',
+                                                minWidth: '200px',
+                                                '& .MuiOutlinedInput-root': {
+                                                    padding: '9px',
+                                                },
+                                                '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
+                                                    {
+                                                        borderRadius: '8px',
+                                                        border: '1px solid #1A1D21',
+                                                    },
+                                                '& .MuiOutlinedInput-root.Mui-focused': {
+                                                    borderRadius: '8px',
+                                                    boxShadow:
+                                                        '0px 0px 0px 4px rgba(97, 113, 67, 0.34)',
+                                                },
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField {...params} label="City" />
+                                            )}
+                                        />
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                            <DatePicker
+                                                label="Season Start Date"
+                                                value={
+                                                    values['startDate']
+                                                        ? dayjs(values['startDate'])
+                                                        : null
+                                                }
+                                                onChange={(value) =>
+                                                    setFieldValue(
+                                                        'startDate',
+                                                        dayjs(value).format('YYYY/MM/DD'),
+                                                    )
+                                                }
+                                                sx={{
+                                                    width: '27%',
+                                                    minWidth: '200px',
+                                                    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
+                                                        {
+                                                            borderRadius: '8px',
+                                                            border: '1px solid #1A1D21',
+                                                        },
+                                                    '& .MuiOutlinedInput-root.Mui-focused': {
+                                                        borderRadius: '8px',
+                                                        boxShadow:
+                                                            '0px 0px 0px 4px rgba(97, 113, 67, 0.34)',
+                                                    },
+                                                }}
+                                            />
+                                            <DatePicker
+                                                label="Season Close Date"
+                                                value={
+                                                    values['enDate']
+                                                        ? dayjs(values['enDate'])
+                                                        : null
+                                                }
+                                                onChange={(value) =>
+                                                    setFieldValue(
+                                                        'enDate',
+                                                        dayjs(value).format('YYYY/MM/DD'),
+                                                    )
+                                                }
+                                                sx={{
+                                                    width: '27%',
+                                                    minWidth: '200px',
+                                                    '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline':
+                                                        {
+                                                            borderRadius: '8px',
+                                                            border: '1px solid #1A1D21',
+                                                        },
+                                                    '& .MuiOutlinedInput-root.Mui-focused': {
+                                                        borderRadius: '8px',
+                                                        boxShadow:
+                                                            '0px 0px 0px 4px rgba(97, 113, 67, 0.34)',
+                                                    },
+                                                }}
+                                            />
+                                        </LocalizationProvider>
+                                        <button
+                                            type="submit"
+                                            className="py-3 rounded text-white px-6 text-xl bg-primary-1"
+                                        >
+                                            Search
+                                        </button>
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                    </div>
                 </div>
             </div>
             <div
@@ -192,7 +212,7 @@ const Campsites = () => {
                             style={{
                                 gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
                             }}
-                            className="grid gap-4"
+                            className="grid gap-7"
                         >
                             {campsites &&
                                 campsites.map((campsite) => (

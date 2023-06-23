@@ -15,7 +15,7 @@ const Campsite = ({ campsite }) => {
                 boxShadow:
                     'rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px',
             }}
-            className="bg-white min-h-[200px] rounded-t-md duration-75 hover:shadow-xl pb-4"
+            className="bg-white max-w-[500px] min-h-[200px] rounded-t-md duration-75 hover:shadow-xl pb-4"
         >
             <img
                 src={campsite.defaultImage ?? ''}

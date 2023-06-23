@@ -30,5 +30,5 @@ export function truncate(str, n) {
 }
 
 export function removeEmpty(obj) {
-    return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null && v != ''));
+    return Object.fromEntries(Object.entries(obj).filter(([, v]) => v != null && v != ''));
 }
