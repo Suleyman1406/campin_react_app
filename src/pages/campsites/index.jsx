@@ -7,10 +7,12 @@ import dayjs from 'dayjs';
 import { Form, Formik } from 'formik';
 import LandingBg from 'images/landing_bg.jpeg';
 import React, { useEffect, useMemo, useState } from 'react';
+import { LuFilterX } from 'react-icons/lu';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import { getCampsiteWithFilter } from 'services/campsite/getCampsiteWithFilter';
 import { getCities } from 'services/city/getCities';
+import { getFavoriteCampsites } from 'services/favorite-campsite/getFavoriteCampsites';
 import { notifyAxiosError, removeEmpty } from 'utils';
 
 const Campsites = () => {
@@ -19,6 +21,7 @@ const Campsites = () => {
     const [getDataLoading, setDataLoading] = useState(false);
     const [campsites, setCampsites] = useState([]);
     const [getCitiesLoading, setCitiesLoading] = useState(true);
+    const [favoriteCampsites, setFavoriteCampsites] = useState([]);
     const navigate = useNavigate();
     const searchParameters = useMemo(() => JSON.parse(searchParams.get('search')), [searchParams]);
 
@@ -30,6 +33,13 @@ const Campsites = () => {
             })
             .catch((err) => notifyAxiosError(err))
             .finally(() => setCitiesLoading(false));
+        getFavoriteCampsites()
+            .then((res) => {
+                if (res.data && res.data.succeeded) {
+                    setFavoriteCampsites(res.data.body);
+                }
+            })
+            .catch((err) => notifyAxiosError(err));
     }, []);
 
     useEffect(() => {
@@ -58,9 +68,9 @@ const Campsites = () => {
                         </Link>
                         <Formik
                             initialValues={{
-                                cityName: searchParameters.cityName ?? '',
-                                startDate: searchParameters.startDate ?? '',
-                                enDate: searchParameters.enDate ?? '',
+                                cityName: searchParameters?.cityName ?? '',
+                                startDate: searchParameters?.startDate ?? '',
+                                enDate: searchParameters?.enDate ?? '',
                             }}
                             enableReinitialize
                             onSubmit={(values) => {
@@ -187,6 +197,17 @@ const Campsites = () => {
                                         >
                                             Search
                                         </button>
+                                        <button
+                                            onClick={() => {
+                                                setFieldValue('cityName', '');
+                                                setFieldValue('startDate', '');
+                                                setFieldValue('enDate', '');
+                                                navigate('/campsite');
+                                            }}
+                                            className="py-3 px-5 bg-[rgb(190,190,190)] rounded text-xl"
+                                        >
+                                            <LuFilterX />
+                                        </button>
                                     </div>
                                 </Form>
                             )}
@@ -216,7 +237,14 @@ const Campsites = () => {
                         >
                             {campsites &&
                                 campsites.map((campsite) => (
-                                    <Campsite key={campsite.campsiteId} campsite={campsite} />
+                                    <Campsite
+                                        key={campsite.campsiteId}
+                                        campsite={campsite}
+                                        isFavorite={favoriteCampsites.find(
+                                            (c) => c.campsiteId === campsite.campsiteId,
+                                        )}
+                                        setFavoriteCampsites={setFavoriteCampsites}
+                                    />
                                 ))}
                         </div>
                         {campsites && campsites.length === 0 && (

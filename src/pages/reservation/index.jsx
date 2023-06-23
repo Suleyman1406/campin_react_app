@@ -119,6 +119,11 @@ const Reservations = () => {
                             ))}
                     </div>
                 )}
+                {!loading && reservations && reservations.length === 0 && (
+                    <div className="mt-[200px] font-play-fair text-center text-3xl">
+                        Reservation Not Found.
+                    </div>
+                )}
             </div>
         </div>
     );

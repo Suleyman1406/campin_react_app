@@ -90,6 +90,15 @@ const Navbar = ({ isLandingPage = false }) => {
                             >
                                 Account
                             </Link>
+                            {user && (
+                                <Link
+                                    to="/favorites"
+                                    className="block hover:bg-primary-1/40 duration-100 text-primary-1 p-3"
+                                >
+                                    Favorites
+                                </Link>
+                            )}
+
                             {getIsBasicUser() && (
                                 <Link
                                     to="/reservations"

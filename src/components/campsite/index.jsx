@@ -1,3 +1,4 @@
+import useAuth from 'context/auth';
 import { ReactComponent as CapacityIcon } from 'images/icons/capacity.svg';
 import { ReactComponent as ChildIcon } from 'images/icons/child.svg';
 import { ReactComponent as FilledStarIcon } from 'images/icons/filled-star.svg';
@@ -5,10 +6,38 @@ import { ReactComponent as LocationIcon } from 'images/icons/location.svg';
 import { ReactComponent as NotFilledStarIcon } from 'images/icons/not-filled-star.svg';
 import { ReactComponent as PersonIcon } from 'images/icons/person.svg';
 import NotFoundImg from 'images/image-not-found.png';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
+import { addToFavoriteCampsite } from 'services/favorite-campsite/addToFavoriteCampsite';
+import { removeFromFavoriteCampsite } from 'services/favorite-campsite/removeFromFavoriteCampsite';
+import { notifyAxiosError } from 'utils';
 
-const Campsite = ({ campsite }) => {
+const Campsite = ({ campsite, isFavorite, setFavoriteCampsites }) => {
+    const { user } = useAuth();
+
+    const onFavClick = useCallback(() => {
+        if (isFavorite) {
+            removeFromFavoriteCampsite(campsite.campsiteId)
+                .then((res) => {
+                    if (res.data && res.data.succeeded) {
+                        setFavoriteCampsites((prev) => [
+                            ...prev.filter((c) => c.campsiteId !== campsite.campsiteId),
+                        ]);
+                    }
+                })
+                .catch((err) => notifyAxiosError(err));
+        } else {
+            addToFavoriteCampsite(campsite.campsiteId)
+                .then((res) => {
+                    if (res.data && res.data.succeeded) {
+                        setFavoriteCampsites((prev) => [...prev, campsite]);
+                    }
+                })
+                .catch((err) => notifyAxiosError(err));
+        }
+    }, [user, campsite, isFavorite]);
+
     return (
         <div
             style={{
@@ -75,6 +104,19 @@ const Campsite = ({ campsite }) => {
                             Detail
                         </button>
                     </Link>
+                    {user && (
+                        <button
+                            onClick={onFavClick}
+                            className="flex flex-col items-center active:scale-95 duration-100"
+                        >
+                            {isFavorite ? (
+                                <AiFillHeart className="w-7 h-7 fill-red-600" />
+                            ) : (
+                                <AiOutlineHeart className="w-7 h-7 " />
+                            )}
+                            <span className="text-[9px]">Fav</span>
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ import AdminDashboard from 'pages/admin/dashboard';
 import AdminUserTable from 'pages/admin/user-table';
 import CampsiteDetail from 'pages/campsite-detail';
 import Campsites from 'pages/campsites';
+import FavoriteCampsites from 'pages/favorite-campsites';
 import MakeReservation from 'pages/make-reservation';
 import PageNotFound from 'pages/not-found';
 import OwnerCampsites from 'pages/owner/campsite';
@@ -63,6 +64,14 @@ export const router = createBrowserRouter([
         ),
     },
     {
+        path: '/favorites',
+        element: (
+            <ProtectedRoute>
+                <FavoriteCampsites />
+            </ProtectedRoute>
+        ),
+    },
+    {
         path: '/owner/campsite',
         element: (
             <ProtectedRoute isOwner={true}>
@@ -106,12 +115,4 @@ export const router = createBrowserRouter([
         path: '*',
         element: <PageNotFound />,
     },
-    // {
-    //     path: '/admin/tables',
-    //     element: (
-    //         <ProtectedRoute isAdmin={true}>
-    //             <AdminTables />
-    //         </ProtectedRoute>
-    //     ),
-    // },
 ]);
